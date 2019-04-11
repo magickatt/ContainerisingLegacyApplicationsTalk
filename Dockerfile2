@@ -14,6 +14,8 @@ RUN chown www-data: /var/db -R
 
 RUN mkdir /var/www/mybb
 WORKDIR /var/www/mybb
+COPY entrypoint.sh /var/www/mybb
+RUN chmod +x /var/www/mybb/entrypoint.sh
 
 # Theme cache is not regenerated on the fly so needs to be copied in manually
 COPY cache/themes /var/www/mybb/cache/themes
@@ -26,10 +28,15 @@ RUN echo 1 > /var/www/mybb/install/lock
 # Configure Apache web root
 RUN mv /var/www/mybb/htaccess.txt /var/www/mybb/.htaccess
 
-# Symlinks for configuration once volume is mounted
-RUN ln -s /var/config/mybb/config.php /var/www/mybb/inc/config.php
-RUN ln -s /var/config/mybb/settings.php /var/www/mybb/inc/settings.php
+RUN curl -O https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.tgz
+RUN tar -zxf consul-template_0.19.5_linux_amd64.tgz && mv consul-template /usr/local/bin
+
+# Configure MyBB
+COPY configuration/config.tpl /var/config/mybb/
+COPY configuration/settings.tpl /var/config/mybb/
 
 RUN chown www-data: /var/www/mybb -R
 
 EXPOSE 80
+
+ENTRYPOINT ["/var/www/mybb/entrypoint.sh"]

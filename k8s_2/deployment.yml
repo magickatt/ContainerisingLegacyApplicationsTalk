@@ -1,0 +1,47 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mybb-deployment
+#   labels:
+#     app: mybb
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mybb
+#   template:
+#     metadata:
+#       labels:
+#         app: mybb
+#     spec:
+#       containers:
+#       - name: mybb
+#         image: docker.io/magickatt/mybb:latest
+#         ports:
+#         - containerPort: 80
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybb-deployment
+  labels:
+    app: mybb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mybb
+  template:
+    metadata:
+      labels:
+        app: mybb
+    spec:
+      containers:
+      - name: mybb
+        image: docker.io/magickatt/mybb:3_consultemplate
+        args: ["-consul-addr singed-flee-consul-server-0.singed-flee-consul-server.default.svc:8500"]
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: regcred

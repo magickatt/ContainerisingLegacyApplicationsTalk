@@ -50,3 +50,10 @@ https://learn.hashicorp.com/consul/getting-started-k8s/minikube
 
 https://github.com/helm/charts/tree/master/incubator/vault
  replicaCount: 1
+
+
+
+kubectl exec -it singed-flee-consul-qptx9 /bin/sh
+
+consul kv put mybb/boardclosed 0
+consul kv get mybb/boardclosed

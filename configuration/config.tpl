@@ -13,7 +13,7 @@ $config['database']['table_prefix'] = 'mybb_';
 
 $config['database']['hostname'] = '';
 $config['database']['username'] = '';
-$config['database']['password'] = '';
+$config['database']['password'] = '{{with secret "secret/data/mybb/test"}}{{.Data.data.password}}{{end}}';
 
 /**
  * Admin CP directory

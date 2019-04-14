@@ -28,8 +28,8 @@ RUN echo 1 > /var/www/mybb/install/lock
 # Configure Apache web root
 RUN mv /var/www/mybb/htaccess.txt /var/www/mybb/.htaccess
 
-RUN curl -O https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.tgz
-RUN tar -zxf consul-template_0.19.5_linux_amd64.tgz && mv consul-template /usr/local/bin
+RUN curl -O https://releases.hashicorp.com/consul-template/0.20.0/consul-template_0.20.0_linux_amd64.tgz
+RUN tar -zxf consul-template_0.20.0_linux_amd64.tgz && mv consul-template /usr/local/bin
 
 # Configure MyBB
 COPY configuration/config.tpl /var/config/mybb/

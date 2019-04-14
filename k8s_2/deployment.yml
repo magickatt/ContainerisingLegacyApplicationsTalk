@@ -37,10 +37,15 @@ spec:
       labels:
         app: mybb
     spec:
+      serviceAccount: vault-auth
       containers:
       - name: mybb
         image: docker.io/magickatt/mybb:3_consultemplate
-        args: ["-consul-addr singed-flee-consul-server-0.singed-flee-consul-server.default.svc:8500"]
+        env:
+        - name: VAULT_ADDR
+          value: "http://meowth-vault.default.svc.cluster.local:8200"
+        args:
+          - "-consul-addr singed-flee-consul-server-0.singed-flee-consul-server.default.svc:8500"
         ports:
         - containerPort: 80
       imagePullSecrets:

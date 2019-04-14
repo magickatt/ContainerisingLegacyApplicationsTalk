@@ -46,6 +46,8 @@ sudo ssh -p 2222 -i ~/.vagrant.d/insecure_private_key -N -L \
 
 ## 3
 
+### Consul
+
 https://learn.hashicorp.com/consul/getting-started-k8s/minikube
 
 https://github.com/helm/charts/tree/master/incubator/vault
@@ -57,3 +59,46 @@ kubectl exec -it singed-flee-consul-qptx9 /bin/sh
 
 consul kv put mybb/boardclosed 0
 consul kv get mybb/boardclosed
+
+
+
+
+
+### Vault
+
+
+export VAULT_POD=$(kubectl get pods --namespace default -l "app=vault" -o jsonpath="{.items[0].metadata.name}")
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=$(kubectl logs $VAULT_POD | grep 'Root Token' | cut -d' ' -f3)
+
+kubectl create serviceaccount vault-auth
+kubectl apply --filename k8s_2/vault-auth-service-account.yml
+
+vault kv put secret/mybb/test password="pizza"
+
+
+
+
+vault write auth/userpass/users/mybb-qa \
+        password=qual1ty \
+        policies=mybb-kv-readonly
+
+vault login -method=userpass \
+        username=mybb-qa \
+        password=qual1ty
+
+
+
+
+
+
+#### Experimental
+s.6laGe4Pg5haJlPzcqSbGJp83
+export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
+export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data.token}" | base64 --decode; echo)
+export K8S_HOST=$(kubectl exec singed-flee-consul-server-0 -- sh -c 'echo $KUBERNETES_SERVICE_HOST')
+
+vault write auth/kubernetes/config \
+  token_reviewer_jwt="$SA_JWT_TOKEN" \
+  kubernetes_host="https://$K8S_HOST:443" \
+  kubernetes_ca_cert="$SA_CA_CRT"

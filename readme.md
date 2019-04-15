@@ -102,3 +102,9 @@ vault write auth/kubernetes/config \
   token_reviewer_jwt="$SA_JWT_TOKEN" \
   kubernetes_host="https://$K8S_HOST:443" \
   kubernetes_ca_cert="$SA_CA_CRT"
+
+	curl -X GET \
+	  http://localhost:8200/v1/secret/data/mybb/test \
+	  -H 'x-vault-token: xxx'
+
+http://localhost:8200/v1/secret/data/mybb/test

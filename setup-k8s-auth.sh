@@ -19,7 +19,7 @@ vault policy write mybb-kv-readonly mybb-kv-readonly.hcl
 
 
 # Create test data in the `secret/mybb` path.
-vault kv put secret/mybb/config username='appuser' password='suP3rsec(et!' ttl='30s'
+# vault kv put secret/mybb/config username='appuser' password='suP3rsec(et!' ttl='30s'
 
 # Enable userpass auth method
 vault auth enable userpass
@@ -38,6 +38,7 @@ export SA_CA_CRT=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data['ca\.cr
 
 # Set K8S_HOST to minikube IP address
 export K8S_HOST=$(minikube ip)
+export K8S_HOST=$(kubectl exec singed-flee-consul-server-0 -- sh -c 'echo $KUBERNETES_SERVICE_HOST')
 
 # Enable the Kubernetes auth method at the default path ("auth/kubernetes")
 vault auth enable kubernetes

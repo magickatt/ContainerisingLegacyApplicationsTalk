@@ -46,7 +46,28 @@ spec:
           value: "http://meowth-vault.default.svc.cluster.local:8200"
         args:
           - "-consul-addr singed-flee-consul-server-0.singed-flee-consul-server.default.svc:8500"
+          - "-vault-agent-token-file /etc/vault/token"
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: vault-token
+          mountPath: /etc/vault
       imagePullSecrets:
       - name: regcred
+      initContainers:
+        - name: vault-init
+          image: everpeace/curl-jq
+          command:
+          - "sh"
+          - "-c"
+          - >
+            KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
+            curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "mybb"}' http://meowth-vault:8200/v1/auth/kubernetes/login | jq -j '.auth.client_token' > /etc/vault/token;
+          volumeMounts:
+          - name: vault-token
+            mountPath: /etc/vault
+      volumes:
+      - name: app-creds
+        emptyDir: {}
+      - name: vault-token
+        emptyDir: {}

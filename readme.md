@@ -108,3 +108,7 @@ vault write auth/kubernetes/config \
 	  -H 'x-vault-token: xxx'
 
 http://localhost:8200/v1/secret/data/mybb/test
+
+### MySQL
+
+CREATE SCHEMA `mybb` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ;

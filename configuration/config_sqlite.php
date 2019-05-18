@@ -7,13 +7,13 @@
  * https://docs.mybb.com/
  */
 
-$config['database']['type'] = 'mysqli';
-$config['database']['database'] = 'mybb';
+$config['database']['type'] = 'sqlite';
+$config['database']['database'] = 'mybb.sdb';
 $config['database']['table_prefix'] = 'mybb_';
 
-$config['database']['hostname'] = 'database';
-$config['database']['username'] = 'mybb';
-$config['database']['password'] = 'mybb';
+$config['database']['hostname'] = '';
+$config['database']['username'] = '';
+$config['database']['password'] = '';
 
 /**
  * Admin CP directory

@@ -1,0 +1,25 @@
+# Declare variables to be passed into your templates.
+mybb:
+  replicas: 1
+  port: 80
+  image:
+    repository: nginx
+    tag: stable
+    pullPolicy: IfNotPresent
+php:
+  database:
+    driver: mysqli
+mysql:
+  hostname: mysql-0.mysql
+  schema:
+    name: mybb
+    table_prefix: mybb_
+    encoding: utf8
+  credentials:
+    username: mybb
+    password: mybb
+cache:
+  store: db
+  memcache:
+    host: localhost
+    port: 11211

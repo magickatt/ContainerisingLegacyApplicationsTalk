@@ -6,7 +6,7 @@ $config['database']['database'] = 'mybb';
 $config['database']['table_prefix'] = 'mybb_';
 $config['database']['encoding'] = 'utf8';
 
-$config['database']['hostname'] = 'database';
+$config['database']['hostname'] = 'mysql-0.mysql';
 $config['database']['username'] = 'mybb';
 $config['database']['password'] = 'mybb';
 

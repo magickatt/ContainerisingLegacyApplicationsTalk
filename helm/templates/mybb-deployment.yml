@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybb-deployment
+  labels:
+    app: mybb
+spec:
+  replicas: {{- .Values.mybb.replicas -}}
+  selector:
+    matchLabels:
+      app: mybb
+  template:
+    metadata:
+      labels:
+        app: mybb
+    spec:
+      containers:
+      - name: mybb
+        image: docker.io/magickatt/mybb:2_compose
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: mybb-volume
+          mountPath: /var/config/mybb
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: mybb-volume
+        configMap:
+          name: mybb-configmap
+          items:
+          - key: config_k8s.php
+            path: config.php
+          - key: settings.php
+            path: settings.php

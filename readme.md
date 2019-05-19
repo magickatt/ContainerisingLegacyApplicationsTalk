@@ -23,6 +23,8 @@ https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-regi
 
 ## 2 - Kubernetes
 
+https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/#deploy-mysql
+
 ## Configmap
 
 ### Create configmap
@@ -31,7 +33,7 @@ kubectl create configmap mybb-configmap --from-file=configuration/settings.php -
 
 ### Update configmap
 
-kubectl create configmap mybb-configmap --from-file configuration/settings.php --from-fileconfiguration/config.php -o yaml --dry-run | kubectl replace -f -
+kubectl create configmap mybb-configmap --from-file configuration/settings.php --from-file configuration/config.php -o yaml --dry-run | kubectl replace -f -
 
 https://stackoverflow.com/questions/38216278/update-k8s-configmap-or-secret-without-deleting-the-existing-one
 

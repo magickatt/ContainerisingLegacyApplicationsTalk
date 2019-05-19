@@ -50,6 +50,6 @@ networks:
 
 configs:
   mybb-config:
-    file: ./configuration/config.conf
+    file: ./configuration/config.php
   mybb-settings:
-    file: ./configuration/settings.conf
+    file: ./configuration/settings.php

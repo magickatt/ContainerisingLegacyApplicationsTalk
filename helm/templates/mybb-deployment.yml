@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mybb
 spec:
-  replicas: {{- .Values.mybb.replicas -}}
+  replicas: {{ .Values.mybb.replicas }}
   selector:
     matchLabels:
       app: mybb
@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: mybb
-        image: docker.io/magickatt/mybb:2_compose
+        image: "{{- .Values.mybb.image.repository -}}:{{- .Values.mybb.image.tag }}"
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.mybb.port }}
         volumeMounts:
         - name: mybb-volume
           mountPath: /var/config/mybb
@@ -27,9 +27,9 @@ spec:
       volumes:
       - name: mybb-volume
         configMap:
-          name: mybb-configmap
+          name: mybb-config
           items:
-          - key: config_k8s.php
+          - key: config.php
             path: config.php
           - key: settings.php
             path: settings.php

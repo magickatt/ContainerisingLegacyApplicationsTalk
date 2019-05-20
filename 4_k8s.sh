@@ -10,3 +10,4 @@ kubectl apply -f k8s/
 # configuration/config.php -o yaml --dry-run | kubectl replace -f -
 
 kubectl port-forward mysql-0 3306:3306
+mysql -h 127.0.0.1 -u root < database/mybb.sql

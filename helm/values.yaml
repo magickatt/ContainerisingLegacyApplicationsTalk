@@ -1,16 +1,15 @@
 # Declare variables to be passed into your templates.
 mybb:
-  replicas: 1
+  replicas: 3
   port: 80
   image:
-    repository: nginx
-    tag: stable
-    pullPolicy: IfNotPresent
+    repository: docker.io/magickatt/mybb
+    tag: 2_compose
 php:
   database:
     driver: mysqli
 mysql:
-  hostname: mysql-0.mysql
+  hostname: mybb-mysql.default.svc.cluster.local
   schema:
     name: mybb
     table_prefix: mybb_
@@ -23,3 +22,7 @@ cache:
   memcache:
     host: localhost
     port: 11211
+board:
+    closed:
+      is_closed: 0
+      reason: These forums are currently closed for maintenance. Please check back later.

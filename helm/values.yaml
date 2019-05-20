@@ -20,7 +20,7 @@ mysql:
 cache:
   store: memcached
   memcache:
-    host: mybb-mysql.default.svc.cluster.local
+    host: mybb-memcache-memcached.default.svc.cluster.local
     port: 11211
 board:
     closed:

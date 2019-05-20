@@ -18,9 +18,9 @@ mysql:
     username: mybb
     password: mybb
 cache:
-  store: db
+  store: memcached
   memcache:
-    host: localhost
+    host: mybb-mysql.default.svc.cluster.local
     port: 11211
 board:
     closed:

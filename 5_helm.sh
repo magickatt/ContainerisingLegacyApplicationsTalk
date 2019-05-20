@@ -12,4 +12,4 @@ MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace default mybb-mysql -o jsonp
 mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD < database/mybb.sql
 
 
-helm install --name mybb stable/memcached
+helm install --name mybb-memcache stable/memcached

@@ -4,7 +4,7 @@ mybb:
   port: 80
   image:
     repository: docker.io/magickatt/mybb
-    tag: 2_compose
+    tag: 5_helm
 php:
   database:
     driver: mysqli

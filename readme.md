@@ -1,5 +1,10 @@
 # Containerising legacy applications talk
 
+## Pre-requisites
+
+https://github.com/wercker/stern
+
+
 ## Setup
 
 		git clone --depth=1 --branch=mybb_1820 https://github.com/mybb/mybb.git application

@@ -1,0 +1,52 @@
+FROM php:7.2.16-apache-stretch
+
+# Add the site configuration for Apache
+COPY configuration/mybb.conf /etc/apache2/sites-available/mybb.conf
+RUN a2ensite mybb.conf && a2dissite 000-default
+
+# Specify PHP configuration
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php.ini
+
+# Setup MySQL
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+# Setup Memcache
+# https://stackoverflow.com/questions/40894385/how-can-i-install-the-php-memcached-extension-on-dockers-php7-alpine-image
+RUN mkdir -p /usr/src/php/ext && curl -L https://github.com/php-memcached-dev/php-memcached/archive/v3.1.3.tar.gz | tar -xzC /tmp && mv /tmp/php-memcached-3.1.3 /usr/src/php/ext/memcached
+RUN apt update && apt install zlib1g-dev libmemcached-dev -y
+RUN docker-php-ext-configure /usr/src/php/ext/memcached --disable-memcached-sasl && docker-php-ext-install /usr/src/php/ext/memcached
+
+RUN mkdir /var/www/mybb
+WORKDIR /var/www/mybb
+
+# Add an entrypoint script for running Apache via Consul Template
+COPY entrypoint.sh /var/www/mybb
+RUN chmod +x /var/www/mybb/entrypoint.sh
+
+# Theme cache is not regenerated on the fly so needs to be copied in manually
+COPY cache/themes /var/www/mybb/cache/themes
+
+COPY application /var/www/mybb
+
+# Lock MyBB installation directory (will not load otherwise)
+RUN echo 1 > /var/www/mybb/install/lock
+
+# Configure Apache web root
+RUN mv /var/www/mybb/htaccess.txt /var/www/mybb/.htaccess
+
+# Install Consul Template
+RUN curl -O https://releases.hashicorp.com/consul-template/0.20.0/consul-template_0.20.0_linux_amd64.tgz
+RUN tar -zxf consul-template_0.20.0_linux_amd64.tgz && mv consul-template /usr/local/bin
+
+# Add templates to be rendered from dynamic configuration
+COPY configuration/config.tpl /var/config/mybb/
+COPY configuration/apache2.tpl /var/config/mybb/
+
+# Symlink for configuration once volume is mounted
+RUN ln -s /var/config/volume/settings.php /var/www/mybb/inc/settings.php
+
+RUN chown www-data: /var/www/mybb -R
+
+EXPOSE 80
+
+ENTRYPOINT ["/var/www/mybb/entrypoint.sh"]

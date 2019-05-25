@@ -1,26 +1,3 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: mybb-deployment
-#   labels:
-#     app: mybb
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: mybb
-#   template:
-#     metadata:
-#       labels:
-#         app: mybb
-#     spec:
-#       containers:
-#       - name: mybb
-#         image: docker.io/magickatt/mybb:latest
-#         ports:
-#         - containerPort: 80
-
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,7 +5,7 @@ metadata:
   labels:
     app: mybb
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: mybb
@@ -40,18 +17,20 @@ spec:
       serviceAccount: vault-auth
       containers:
       - name: mybb
-        image: docker.io/magickatt/mybb:3_consultemplate
+        image: docker.io/magickatt/mybb:6_dynamic
         env:
         - name: VAULT_ADDR
-          value: "http://meowth-vault.default.svc.cluster.local:8200"
+          value: "http://secrets-vault:8200"
         args:
-          - "-consul-addr singed-flee-consul-server-0.singed-flee-consul-server.default.svc:8500"
+          - "-consul-addr configuration-consul-server-0.configuration-consul-server.default.svc:8500"
           - "-vault-agent-token-file /etc/vault/token"
         ports:
         - containerPort: 80
         volumeMounts:
         - name: vault-token
           mountPath: /etc/vault
+        - name: mybb-settings-volume
+          mountPath: /var/config/volume
       imagePullSecrets:
       - name: regcred
       initContainers:
@@ -62,7 +41,7 @@ spec:
           - "-c"
           - >
             KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
-            curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "mybb"}' http://meowth-vault:8200/v1/auth/kubernetes/login | jq -j '.auth.client_token' > /etc/vault/token;
+            curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "mybb"}' http://secrets-vault:8200/v1/auth/kubernetes/login | jq -j '.auth.client_token' > /etc/vault/token;
           volumeMounts:
           - name: vault-token
             mountPath: /etc/vault
@@ -71,3 +50,6 @@ spec:
         emptyDir: {}
       - name: vault-token
         emptyDir: {}
+      - name: mybb-settings-volume
+        persistentVolumeClaim:
+          claimName: mybb-settings-volumeclaim

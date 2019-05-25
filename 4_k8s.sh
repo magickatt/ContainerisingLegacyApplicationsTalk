@@ -11,3 +11,6 @@ kubectl apply -f k8s/
 
 kubectl port-forward mysql-0 3306:3306
 mysql -h 127.0.0.1 -u root < database/mybb.sql
+
+echo "Tailing logs of the MyBB deployment..."
+stern --selector app=mybb

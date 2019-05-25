@@ -4,3 +4,7 @@
 
 # MyBB
 application/
+
+# Helm
+consul/helm
+vault/helm

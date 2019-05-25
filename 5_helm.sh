@@ -17,13 +17,5 @@ helm install --name=5_helm ./helm
 #kubectl port-forward mybb-memcache-memcached-0 11211:11211
 #echo "stats items" | ncat 127.0.0.1 11211
 
-
-
-cat > storageClass.yaml << EOF
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: local-storage
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
-EOF
+echo "Tailing logs of the MyBB deployment..."
+stern --selector app=mybb

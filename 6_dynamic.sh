@@ -9,7 +9,7 @@ export CONSUL_POD=configuration-consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
 
 consul kv put mybb/php/database/driver mysqli
-consul kv put mybb/mysql/hostname mybb-mysql.default.svc.cluster.local
+consul kv put mybb/mysql/hostname database-mysql.default.svc.cluster.local
 consul kv put mybb/mysql/schema mybb
 consul kv put mybb/mysql/table_prefix mybb_
 consul kv put mybb/mysql/encoding utf8
@@ -17,6 +17,11 @@ consul kv put mybb/mysql/credentials/username mybb
 consul kv put mybb/cache/store memcached
 consul kv put mybb/cache/memcache/host mybb-memcache-memcached.default.svc.cluster.local
 consul kv put mybb/cache/memcache/port 11211
+consul kv put apache/networking/timeout 300
+consul kv put apache/networking/keepalive On
+consul kv put apache/networking/keepalive_requests 100
+consul kv put apache/networking/keepalive_timeout 5
+consul kv put apache/log_level warn
 
 # git clone https://github.com/helm/charts /tmp/helm-charts
 # mv /tmp/helm-charts/incubator/vault vault/helm

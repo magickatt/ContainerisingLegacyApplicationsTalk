@@ -17,7 +17,8 @@ spec:
       serviceAccount: vault-auth
       containers:
       - name: mybb
-        image: docker.io/magickatt/mybb:6_dynamic
+        # image: docker.io/magickatt/mybb:6_dynamic
+        image: docker.io/magickatt/mybb:7_rotation
         env:
         - name: VAULT_ADDR
           value: "http://secrets-vault:8200"

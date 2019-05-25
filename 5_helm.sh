@@ -2,9 +2,10 @@
 helm init --history-max 200
 
 # Install MySQL via Helm
-helm install --name mybb stable/mysql
-kubectl port-forward mysql-0 3306:3306
-MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace default mybb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo)
+helm install --name database stable/mysql
+MYSQL_POD=$(kubectl get pods --namespace default -l "app=database-mysql" -o jsonpath="{.items[0].metadata.name}")
+kubectl port-forward $MYSQL_POD 3306:3306
+MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace default database-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo)
 mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD < database/mybb.sql
 
 # Install Memcache via Helm

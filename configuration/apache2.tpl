@@ -9,15 +9,16 @@ PidFile ${APACHE_PID_FILE}
 AccessFileName .htaccess
 
 # Networking
-Timeout 300
-KeepAlive On
-MaxKeepAliveRequests 100
-KeepAliveTimeout 5
+Timeout {{ key "apache/networking/timeout" }}
+KeepAlive {{ key "apache/networking/keepalive" }}
+MaxKeepAliveRequests {{ key "apache/networking/keepalive_requests" }}
+KeepAliveTimeout {{ key "apache/networking/keepalive_timeout" }}
 HostnameLookups Off
 
 # Logging
-ErrorLog ${APACHE_LOG_DIR}/error.log
-LogLevel warn
+ErrorLog /dev/stderr
+TransferLog /dev/stdout
+LogLevel {{ key "apache/log_level" }}
 LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
 LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
 LogFormat "%h %l %u %t \"%r\" %>s %O" common

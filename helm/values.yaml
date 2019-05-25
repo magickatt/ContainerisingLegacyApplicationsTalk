@@ -9,7 +9,7 @@ php:
   database:
     driver: mysqli
 mysql:
-  hostname: mybb-mysql.default.svc.cluster.local
+  hostname: database-mysql.default.svc.cluster.local
   schema:
     name: mybb
     table_prefix: mybb_

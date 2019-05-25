@@ -6,7 +6,9 @@ $config['database']['database'] = '{{ key "mybb/mysql/schema" }}';
 $config['database']['table_prefix'] = '{{ key "mybb/mysql/table_prefix" }}';
 $config['database']['encoding'] = '{{ key "mybb/mysql/encoding" }}';
 
-$config['database']['hostname'] = '{{ key "mybb/mysql/hostname" }}';
+{{ range service "database" }}
+$config['database']['hostname'] = '{{ .Address }}:{{ .Port }}';
+{{ end }}
 {{- with secret "database/creds/mybb" }}
 $config['database']['username'] = '{{ .Data.username }}';
 $config['database']['password'] = '{{ .Data.password }}';

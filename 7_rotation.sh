@@ -14,3 +14,6 @@ vault write database/roles/mybb \
     creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT ALL ON mybb.* TO '{{name}}'@'%';" \
     default_ttl="1m" \
     max_ttl="2m"
+
+
+curl --request PUT --data @consul/database.json localhost:8500/v1/catalog/register

@@ -146,3 +146,9 @@ Force a pod to destroy
 ````
 kubectl delete pod [name] --grace-period=0 --force
 ````
+
+List items in memcache
+
+````
+echo "stats items" | ncat 127.0.0.1 11211
+````

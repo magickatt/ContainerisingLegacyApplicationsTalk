@@ -20,7 +20,7 @@ RUN mkdir /var/www/mybb
 WORKDIR /var/www/mybb
 
 # Add an entrypoint script for running Apache via Consul Template
-COPY entrypoint.sh /var/www/mybb
+COPY consul/entrypoint.sh /var/www/mybb
 RUN chmod +x /var/www/mybb/entrypoint.sh
 
 # Theme cache is not regenerated on the fly so needs to be copied in manually

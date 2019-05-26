@@ -16,4 +16,4 @@ vault write database/roles/mybb \
     max_ttl="2m"
 
 
-curl --request PUT --data @consul/database.json localhost:8500/v1/catalog/register
+curl --request PUT --data @consul/external.json localhost:8500/v1/catalog/register

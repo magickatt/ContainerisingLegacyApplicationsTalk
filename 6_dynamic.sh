@@ -4,7 +4,8 @@ docker push magickatt/mybb:6_dynamic
 # git clone https://github.com/hashicorp/consul-helm.git consul/helm
 helm install -f consul/values.yaml --name configuration consul/helm
 
-sleep 10 # Wait for the Consul Server pod to come up (the lazy sleepy way)
+# Wait for the Consul Server pod to come up (the lazy sleepy way)
+sleep 10
 export CONSUL_POD=configuration-consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
 

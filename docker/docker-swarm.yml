@@ -1,0 +1,51 @@
+# Minimum version required for Docker Swarm compatibility and configs feature
+version: "3.3"
+
+services:
+  mybb:
+    image: magickatt/mybb:2_compose
+    configs:
+      - source: mybb-config
+        target: /var/config/mybb/config.php
+      - source: mybb-settings
+        target: /var/config/mybb/settings.php
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 64M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+    networks:
+      - default
+
+  # MySQL
+  database:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3306:3306"
+    networks:
+      - default
+
+networks:
+  default:
+
+configs:
+  mybb-config:
+    file: ../configuration/config.php
+  mybb-settings:
+    file: ../configuration/settings.php

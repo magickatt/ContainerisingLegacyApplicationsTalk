@@ -2,24 +2,11 @@
 version: "3.3"
 
 services:
+  # MyBB
   mybb:
     image: magickatt/mybb:2_compose
     volumes:
-      - ./application:/var/www/mybb
-      - ./configuration:/var/config/mybb
-    # configs:
-    #   - source: mybb-config
-    #     target: /var/config/mybb/config.php
-    #   - source: mybb-settings
-    #     target: /var/config/mybb/settings.php
-    deploy:
-      replicas: 3
-      resources:
-        limits:
-          cpus: "0.1"
-          memory: 64M
-      restart_policy:
-        condition: on-failure
+      - ../configuration:/var/config/mybb
     ports:
       - "80:80"
     networks:
@@ -29,17 +16,8 @@ services:
   database:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          cpus: "0.2"
-          memory: 256M
-      restart_policy:
-        condition: on-failure
     ports:
       - "3306:3306"
     networks:
@@ -47,9 +25,3 @@ services:
 
 networks:
   default:
-
-configs:
-  mybb-config:
-    file: ./configuration/config.php
-  mybb-settings:
-    file: ./configuration/settings.php

@@ -1,3 +1,5 @@
+#https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,7 +11,3 @@ data:
     # Apply this config only on the master.
     [mysqld]
     log-bin
-  slave.cnf: |
-    # Apply this config only on slaves.
-    [mysqld]
-    super-read-only

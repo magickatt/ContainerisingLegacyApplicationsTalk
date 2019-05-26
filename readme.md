@@ -4,6 +4,8 @@
 
 https://github.com/wercker/stern
 
+#kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=[username] --docker-password=[password] --docker-email=[email]
+
 
 ## Setup
 
@@ -119,3 +121,28 @@ http://localhost:8200/v1/secret/data/mybb/test
 ### MySQL
 
 CREATE SCHEMA `mybb` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+
+
+
+
+
+
+
+
+
+
+#### Live Demonstration quick command reference
+
+Replace from-file ConfigMap information
+
+````
+kubectl create configmap mybb-configmap --from-file configuration/settings.php --from-file \
+configuration/config_k8s.php -o yaml --dry-run | kubectl replace -f -
+````
+
+Force a pod to destroy
+
+````
+kubectl delete pod [name] --grace-period=0 --force
+````

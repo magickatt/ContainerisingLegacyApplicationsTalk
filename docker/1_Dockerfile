@@ -27,7 +27,7 @@ RUN echo 1 > /var/www/mybb/install/lock
 RUN mv /var/www/mybb/htaccess.txt /var/www/mybb/.htaccess
 
 # Configure MyBB
-COPY configuration/config.php /var/www/mybb/inc
+COPY configuration/config_sqlite.php /var/www/mybb/inc/config.php
 COPY configuration/settings.php /var/www/mybb/inc
 
 RUN chown www-data: /var/www/mybb -R

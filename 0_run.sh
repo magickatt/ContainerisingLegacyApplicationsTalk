@@ -3,8 +3,9 @@ VERSION_STRIPPED="${VERSION//./}"
 
 echo "Downloading and extracting MyBB ${VERSION}"
 rm -Rf application/*
-curl --output mybb.zip --progress-bar https://resources.mybb.com/downloads/mybb_${VERSION//./}.zip
-unzip mybb.zip 'Upload/*' -d /tmp/mybb${VERSION_STRIPPED} -qq -o && mv /tmp/mybb${VERSION_STRIPPED}/Upload application
+curl --output mybb.zip --progress-bar "https://resources.mybb.com/downloads/mybb_${VERSION_STRIPPED}.zip"
+unzip mybb.zip 'Upload/*' -d "/tmp/mybb${VERSION_STRIPPED}" -qq -o
+cp -R "/tmp/mybb${VERSION_STRIPPED}/Upload/" application && rm -Rf "/tmp/mybb${VERSION_STRIPPED}"
 rm mybb.zip
 
 echo "Copying pre-build config.php and settings.php into application directory"

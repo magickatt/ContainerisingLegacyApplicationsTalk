@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybb-deployment
+  labels:
+    app: mybb
+spec:
+  replicas: {{ .Values.mybb.replicas }}
+  selector:
+    matchLabels:
+      app: mybb
+  template:
+    metadata:
+      labels:
+        app: mybb
+    spec:
+      serviceAccount: vault-auth
+      containers:
+      - name: mybb
+        image: "{{- .Values.mybb.image.repository }}:{{ .Values.mybb.image.tag -}}"
+        # image: docker.io/magickatt/mybb:7_rotation
+        env:
+        - name: VAULT_ADDR
+          value: "{{- .Values.vault.host -}}:{{- .Values.vault.port }}"
+        args:
+          - "-consul-addr {{ .Values.consul.host }}:{{ .Values.consul.port -}}"
+          - "-vault-agent-token-file /etc/vault/token"
+        ports:
+        - containerPort: {{ .Values.mybb.port }}
+        volumeMounts:
+        - name: vault-token
+          mountPath: /etc/vault
+        - name: mybb-settings-volume
+          mountPath: /var/config/volume
+      imagePullSecrets:
+      - name: regcred
+      initContainers:
+        # Run a container prior to MyBB which will generate a Vault token for use
+        # by Consul Template to retrieve secrets from Vault when rendering config.php
+        - name: vault-init
+          image: everpeace/curl-jq
+          command:
+          - "sh"
+          - "-c"
+          - >
+            KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
+            curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "mybb"}' {{ .Values.vault.host }}:{{ .Values.vault.port }}/v1/auth/kubernetes/login | jq -j '.auth.client_token' > /etc/vault/token;
+          volumeMounts:
+          # Need to ensure we write the Vault token to a volume that is later mounted in MyBB
+          - name: vault-token
+            mountPath: /etc/vault
+      volumes:
+      - name: app-creds
+        emptyDir: {}
+      - name: vault-token
+        emptyDir: {}
+      - name: mybb-settings-volume
+        persistentVolumeClaim:
+          claimName: mybb-settings-volumeclaim

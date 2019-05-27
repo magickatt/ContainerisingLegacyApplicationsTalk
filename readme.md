@@ -152,3 +152,6 @@ List items in memcache
 ````
 echo "stats items" | ncat 127.0.0.1 11211
 ````
+
+
+export PATH=$PATH:/Applications/MySQL\ Workbench.app/Contents/MacOS

@@ -1,0 +1,13 @@
+# Declare variables to be passed into your templates.
+mybb:
+  replicas: 3
+  port: 80
+  image:
+    repository: docker.io/magickatt/mybb
+    tag: 6_dynamic
+consul:
+  host: configuration-consul-server-0.configuration-consul-server.default.svc
+  port: 8500
+vault:
+  host: http://secrets-vault
+  port: 8200

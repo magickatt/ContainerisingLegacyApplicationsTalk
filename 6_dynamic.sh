@@ -1,11 +1,13 @@
-docker build . -f 6_Dockerfile -t magickatt/mybb:6_dynamic
+helm delete --purge mybb
+
+docker build . -f docker/6_Dockerfile -t magickatt/mybb:6_dynamic
 docker push magickatt/mybb:6_dynamic
 
 # git clone https://github.com/hashicorp/consul-helm.git consul/helm
 helm install -f consul/values.yaml --name configuration consul/helm
 
 # Wait for the Consul Server pod to come up (the lazy sleepy way)
-sleep 10
+sleep 15
 export CONSUL_POD=configuration-consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
 
@@ -16,7 +18,7 @@ consul kv put mybb/mysql/table_prefix mybb_
 consul kv put mybb/mysql/encoding utf8
 consul kv put mybb/mysql/credentials/username mybb
 consul kv put mybb/cache/store memcached
-consul kv put mybb/cache/memcache/host mybb-memcache-memcached.default.svc.cluster.local
+consul kv put mybb/cache/memcache/host cache-memcached.default.svc.cluster.local
 consul kv put mybb/cache/memcache/port 11211
 consul kv put apache/networking/timeout 300
 consul kv put apache/networking/keepalive On
@@ -68,6 +70,8 @@ vault write auth/kubernetes/role/mybb \
   bound_service_account_namespaces=default \
   policies=mybb-kv-readonly \
   ttl=24h
+
+helm install --name=mybb ./helm/dynamic
 
 echo "Tailing logs of the MyBB deployment..."
 stern --selector app=mybb

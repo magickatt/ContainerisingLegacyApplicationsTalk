@@ -22,8 +22,8 @@ helm install --name cache stable/memcached
 
 # Install MyBB via Helm
 echo "Deploying MyBB"
-helm install --dry-run --debug ./helm
-helm install --name=mybb ./helm
+helm install --dry-run --debug ./helm/standard
+helm install --name=mybb ./helm/standard
 echo "Deploying MySQL"
 
 kubectl port-forward cache-memcached-0 11211:11211 &

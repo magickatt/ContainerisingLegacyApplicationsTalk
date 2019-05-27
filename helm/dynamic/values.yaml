@@ -3,7 +3,7 @@ mybb:
   replicas: 3
   port: 80
   image:
-    repository: docker.io/magickatt/mybb
+    repository: docker.for.mac.localhost:5000/mybb
     tag: 6_dynamic
 consul:
   host: configuration-consul-server-0.configuration-consul-server.default.svc

@@ -1,12 +1,14 @@
 helm delete --purge mybb
 
-docker build . -f docker/6_Dockerfile -t magickatt/mybb:6_dynamic
-docker push magickatt/mybb:6_dynamic
+docker build . -f docker/6_Dockerfile -t localhost:5000/mybb:6_dynamic
+docker push localhost:5000/mybb:6_dynamic
 
-# git clone https://github.com/hashicorp/consul-helm.git consul/helm
+#rm -Rf consul/helm
+#git clone --branch v0.1.0 https://github.com/hashicorp/consul-helm.git consul/helm
 helm install -f consul/values.yaml --name configuration consul/helm
 
 # Wait for the Consul Server pod to come up (the lazy sleepy way)
+echo "\nWaiting for Consul to become available...\n"
 sleep 15
 export CONSUL_POD=configuration-consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
@@ -26,10 +28,12 @@ consul kv put apache/networking/keepalive_requests 100
 consul kv put apache/networking/keepalive_timeout 5
 consul kv put apache/log_level warn
 
-# git clone https://github.com/helm/charts /tmp/helm-charts
-# mv /tmp/helm-charts/incubator/vault vault/helm
+#rm -Rf vault/helm
+#git clone https://github.com/helm/charts /tmp/helm-charts
+#mv /tmp/helm-charts/incubator/vault vault/helm
 helm install --name=secrets --set replicaCount=1 vault/helm
 
+echo "\nWaiting for Vault to become available...\n"
 sleep 10 # Wait for the Vault Server pod to come up (the lazy sleepy way)
 export VAULT_POD=$(kubectl get pods --namespace default -l "app=vault" -o jsonpath="{.items[0].metadata.name}")
 kubectl port-forward $VAULT_POD 8200:8200 &

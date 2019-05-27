@@ -1,6 +1,9 @@
+echo "Stopping Docker container from previous demonstration (if still running)"
+docker stop $(docker ps -q --filter ancestor=localhost:5000/mybb:1_docker)
+
 # Build the container locally, tag it then push it to a private repository
-#docker build . -f docker/2_Dockerfile -t magickatt/mybb:2_compose
-#docker push magickatt/mybb:2_compose
+docker build . -f docker/2_Dockerfile -t localhost:5000/mybb:2_compose
+docker push localhost:5000/mybb:2_compose
 
 #docker kill $(docker ps -q)
 docker-compose -f docker/docker-compose.yml up -d

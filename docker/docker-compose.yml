@@ -4,7 +4,7 @@ version: "3.3"
 services:
   # MyBB
   mybb:
-    image: magickatt/mybb:2_compose
+    image: localhost:5000/mybb:2_compose
     volumes:
       - ../configuration:/var/config/mybb
     ports:

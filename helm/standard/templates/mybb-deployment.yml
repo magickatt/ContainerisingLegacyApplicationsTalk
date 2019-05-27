@@ -24,8 +24,8 @@ spec:
           mountPath: /var/config/mybb
         - name: mybb-settings-volume
           mountPath: /var/config/volume
-      imagePullSecrets:
-      - name: regcred
+      # imagePullSecrets:
+      # - name: regcred
       volumes:
       - name: mybb-volume
         configMap:

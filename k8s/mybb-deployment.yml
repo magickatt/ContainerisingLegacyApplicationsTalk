@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mybb
-        image: docker.io/magickatt/mybb:2_compose
+        image: localhost:5000/mybb:2_compose
         ports:
         - containerPort: 80
         volumeMounts:

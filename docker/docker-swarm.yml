@@ -3,7 +3,7 @@ version: "3.3"
 
 services:
   mybb:
-    image: magickatt/mybb:2_compose
+    image: localhost:5000/mybb:2_compose
     configs:
       - source: mybb-config
         target: /var/config/mybb/config.php

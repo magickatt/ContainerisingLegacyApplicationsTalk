@@ -4,8 +4,8 @@ echo "Build and run a basic MyBB Docker container"
 rm -f application/inc/config.php application/inc/settings.php
 
 # Build the container locally, tag it then push it to a private repository
-docker build . -f docker/1_Dockerfile -t magickatt/mybb:1_docker
-docker push magickatt/mybb:1_docker
+docker build . -f docker/1_Dockerfile -t localhost:5000/mybb:1_docker
+docker push localhost:5000/mybb:1_docker
 
 # Run the container
-docker run -p 80:80 -t magickatt/mybb:1_docker
+docker run -p 80:80 -t localhost:5000/mybb:1_docker

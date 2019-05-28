@@ -1,9 +1,15 @@
-helm delete --purge mybb
+# echo "\Stopping MyBB deployment"
+# sleep 1
+# helm delete --purge mybb
 
+echo "\nBuilding MyBB Docker image"
+sleep 1
 docker build . -f docker/6_Dockerfile -t magickatt/mybb:6_dynamic
 docker push magickatt/mybb:6_dynamic
 
 # git clone https://github.com/hashicorp/consul-helm.git consul/helm
+echo "\nDeploying Consul to Kubernetes"
+sleep 1
 helm install -f consul/values.yaml --name configuration consul/helm
 
 # Wait for the Consul Server pod to come up (the lazy sleepy way)
@@ -11,6 +17,7 @@ sleep 15
 export CONSUL_POD=configuration-consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
 
+echo "\Populating data into Consul"
 consul kv put mybb/php/database/driver mysqli
 consul kv put mybb/mysql/hostname database-mysql.default.svc.cluster.local
 consul kv put mybb/mysql/schema mybb
@@ -26,6 +33,8 @@ consul kv put apache/networking/keepalive_requests 100
 consul kv put apache/networking/keepalive_timeout 5
 consul kv put apache/log_level warn
 
+echo "\nDeploying Vault to Kubernetes"
+sleep 1
 # git clone https://github.com/helm/charts /tmp/helm-charts
 # mv /tmp/helm-charts/incubator/vault vault/helm
 helm install --name=secrets --set replicaCount=1 vault/helm
@@ -40,10 +49,12 @@ export VAULT_TOKEN=$(kubectl logs $VAULT_POD | grep 'Root Token' | cut -d' ' -f3
 kubectl create serviceaccount vault-auth
 kubectl apply --filename vault/vault-auth-service-account.yml
 
+echo "\Populating data into Vault"
 vault kv put secret/mybb/mysql/credentials password="mybb"
 
 
-
+echo "\Configuring Vault policies"
+sleep 1
 
 # Set VAULT_SA_NAME to the service account you created earlier
 export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
@@ -71,7 +82,9 @@ vault write auth/kubernetes/role/mybb \
   policies=mybb-kv-readonly \
   ttl=24h
 
+echo "\nDeploying MyBB to Kubernetes"
+sleep 1
 helm install --name=mybb ./helm/dynamic
 
-echo "Tailing logs of the MyBB deployment..."
+echo "\nTailing the logs..."
 stern --selector app=mybb

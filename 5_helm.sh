@@ -1,6 +1,6 @@
 kubectl delete deployment mybb-deployment
 kubectl delete statefulset mysql
-kubectl delete pv,pvc --all
+kubectl delete pv,pvc --all &
 
 docker build . -f docker/5_Dockerfile -t localhost:5000/mybb:5_helm
 docker push localhost:5000/mybb:5_helm

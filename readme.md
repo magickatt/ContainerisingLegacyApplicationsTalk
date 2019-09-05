@@ -20,7 +20,7 @@ Outcome of this demo is to show a basic Docker image build and that MyBB runs on
 
 ### Video
 
-<iframe src="https://player.vimeo.com/video/357978539" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+[Demo 1 video on Vimeo](https://vimeo.com/357978539)
 
 ### Notes
 

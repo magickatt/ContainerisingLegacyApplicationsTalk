@@ -1,23 +1,34 @@
-# Containerising legacy applications talk
+# Containerizing legacy applications
+
+Contains code for all the demonstrations in the *Containerizing legacy applications with dynamic file-based configurations and secrets* talk that I delivered at DevOps Days Toronto 2019 and DevOps Days Boston 2019.
 
 ## Pre-requisites
 
-https://github.com/wercker/stern
+To run the demos you will need the following software installed
 
-#kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=[username] --docker-password=[password] --docker-email=[email]
+* [Docker](https://docs.docker.com/install)
+* [Kubernetes](https://blog.docker.com/2018/07/kubernetes-is-now-available-in-docker-desktop-stable-channel)
+* [Stern](https://github.com/wercker/stern) (tail multiple k8s pod logs)
 
+## Demo 1, Run MyBB in a single Docker container
 
-## Setup
-
-		git clone --depth=1 --branch=mybb_1820 https://github.com/mybb/mybb.git application
-		rm -rf ./application/.git
-
-## 1
+Outcome of this demo is to show a basic Docker image build and that MyBB runs on a local Docker host (with some caveats)
 
 ### Run
 
-		docker build . -t mybb:latest
-    docker run -p 80:80 mybb:latest
+    ./1_docker.sh
+
+### Video
+
+![](videos/Demo_1_Docker.mp4)
+
+### Notes
+
+	git clone --depth=1 --branch=mybb_1820 https://github.com/mybb/mybb.git application
+	rm -rf ./application/.git
+
+	docker build . -t mybb:latest
+   docker run -p 80:80 mybb:latest
 
 https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 
@@ -46,6 +57,10 @@ https://stackoverflow.com/questions/38216278/update-k8s-configmap-or-secret-with
 
 ln -s /var/www/config/config.php /var/www/html/mybb/inc/config.php
 ln -s /var/www/config/settings.php /var/www/html/mybb/inc/settings.php
+
+### Docker credentials
+
+	kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=[username] --docker-password=[password] --docker-email=[email]
 
 ## 2 - Nomad
 

@@ -10,6 +10,20 @@ To run the demos you will need the following software installed
 * [Kubernetes](https://blog.docker.com/2018/07/kubernetes-is-now-available-in-docker-desktop-stable-channel)
 * [Stern](https://github.com/wercker/stern) (tail multiple k8s pod logs)
 
+## Demo 0, Run MyBB locally
+
+### Run
+
+    ./0_local.sh
+
+### Video
+
+![videos/Demo_0_Local.mp4](videos/thumbs/Demo_0_Local.gif)
+
+[Demo 0 video on Vimeo](https://vimeo.com/358959423)
+
+### Notes
+
 ## Demo 1, Run MyBB in a single Docker container
 
 Outcome of this demo is to show a basic Docker image build and that MyBB runs on a local Docker host (with some caveats)
@@ -19,6 +33,8 @@ Outcome of this demo is to show a basic Docker image build and that MyBB runs on
     ./1_docker.sh
 
 ### Video
+
+![videos/Demo_1_Docker.mp4](videos/thumbs/Demo_1_Docker.gif)
 
 [Demo 1 video on Vimeo](https://vimeo.com/357978539)
 
@@ -38,6 +54,106 @@ https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-regi
 		secret/regcred created -->
 
 		kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=magickatt --docker-password=[password] --docker-email=a.kirkpatrick@rocketmail.com
+
+## Demo 2, Run MyBB in multiple containers using Docker Compose
+
+### Run
+
+    ./2_compose.sh
+    
+### Video
+
+![videos/Demo_2_Compose.mp4](videos/thumbs/Demo_2_Compose.gif)
+
+[Demo 2 video on Vimeo](https://vimeo.com/358958970)
+
+### Notes
+
+Coming soon...
+
+## Demo 3, Run MyBB in multiple containers using Docker Swarm
+
+### Run
+
+    ./3_swarm.sh
+    
+### Video
+
+![videos/Demo_3_Swarm.mp4](videos/thumbs/Demo_3_Swarm.gif)
+
+[Demo 3 video on Vimeo](https://vimeo.com/358959390)
+
+### Notes
+
+Coming soon...
+
+## Demo 4, Run MyBB in multiple containers using Kubernetes
+
+### Run
+
+    ./4_k8s.sh
+    
+### Video
+
+![videos/Demo_4_k8s.mp4](videos/thumbs/Demo_4_k8s.gif)
+
+[Demo 4 video on Vimeo](https://vimeo.com/358959402)
+
+### Notes
+
+Coming soon...
+
+## Demo 5, Install MyBB and dependent services using Helm
+
+### Run
+
+    ./5_helm.sh
+    
+### Video
+
+![videos/Demo_5_Helm.mp4](videos/thumbs/Demo_5_Helm.gif)
+
+[Demo 5 video on Vimeo](https://vimeo.com/358959408)
+
+### Notes
+
+Coming soon...
+
+## Demo 6, Run MyBB with Consul and Vault KV
+
+### Run
+
+    ./6_dynamic.sh
+    
+### Video
+
+![videos/Demo_6_Dynamic.mp4](videos/thumbs/Demo_6_Dynamic.gif)
+
+[Demo 6 video on Vimeo](https://vimeo.com/358961230)
+
+### Notes
+
+Coming soon...
+
+## Demo 7, Run MyBB with Consul ESM and Vault database secrets engine
+
+### Run
+
+    ./7_rotation.sh
+    
+### Video
+
+![videos/Demo_7_Rotation.mp4](videos/thumbs/Demo_7_Rotation.gif)
+
+[Demo 7 video on Vimeo](https://vimeo.com/358959419)
+
+### Notes
+
+Coming soon...
+
+
+
+
 
 ## 2 - Kubernetes
 

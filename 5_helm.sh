@@ -1,7 +1,9 @@
+echo "Stopping Kubernetes deployments"
 kubectl delete deployment mybb-deployment
 kubectl delete statefulset mysql
 kubectl delete pv,pvc --all &
 
+echo "\nBuilding MyBB Docker image"
 docker build . -f docker/5_Dockerfile -t localhost:5000/mybb:5_helm
 docker push localhost:5000/mybb:5_helm
 
@@ -22,12 +24,11 @@ mysql -h 127.0.0.1 -u root -p$MYSQL_ROOT_PASSWORD < database/mybb.sql
 # Install Memcache via Helm
 echo "\nDeploying Memcache to Kubernetes"
 sleep 1
-helm install --name cache stable/memcached
+helm install --name cache --set replicaCount=1 stable/memcached
 
 # Install MyBB via Helm
 echo "\nDeploying MyBB to Kubernetes"
 sleep 1
-helm install --dry-run --debug ./helm/standard
 helm install --name=mybb ./helm/standard
 
 #kubectl port-forward cache-memcached-0 11211:11211 &

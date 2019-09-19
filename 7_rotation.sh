@@ -1,4 +1,4 @@
-echo "\Stopping MyBB deployment"
+echo "Stopping MyBB deployment"
 sleep 1
 helm delete --purge mybb
 pkill kubectl
@@ -9,13 +9,15 @@ docker build . -f docker/7_Dockerfile -t localhost:5000/mybb:7_rotation
 docker push localhost:5000/mybb:7_rotation
 
 export VAULT_POD=$(kubectl get pods --namespace default -l "app=vault" -o jsonpath="{.items[0].metadata.name}")
-# kubectl port-forward $VAULT_POD 8200:8200 &
+kubectl port-forward $VAULT_POD 8200:8200 &
 export CONSUL_POD=configuration-consul-server-0
-# kubectl port-forward $CONSUL_POD 8500:8500 &
+kubectl port-forward $CONSUL_POD 8500:8500 &
 
+export VAULT_ADDR=http://127.0.0.1:8200
 export VAULT_TOKEN=$(kubectl logs $VAULT_POD | grep 'Root Token' | cut -d' ' -f3)
 
-# vault secrets enable database
+sleep 5
+vault secrets enable database
 
 MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace default database-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo)
 
@@ -46,5 +48,6 @@ sleep 1
 #helm install --dry-run --debug --set mybb.image.tag=7_rotation ./helm/dynamic
 helm install --name=mybb --set mybb.image.tag=7_rotation ./helm/dynamic
 
+sleep 15
 echo "Tailing logs of the MyBB deployment..."
 stern --selector app=mybb

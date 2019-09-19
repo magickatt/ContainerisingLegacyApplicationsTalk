@@ -1,6 +1,7 @@
-echo "\Stopping MyBB deployment"
+echo "Stopping MyBB deployment"
 sleep 1
 helm delete --purge mybb
+pkill kubectl
 
 echo "\nBuilding MyBB Docker image"
 sleep 1
@@ -53,11 +54,11 @@ export VAULT_TOKEN=$(kubectl logs $VAULT_POD | grep 'Root Token' | cut -d' ' -f3
 kubectl create serviceaccount vault-auth
 kubectl apply --filename vault/vault-auth-service-account.yml
 
-echo "\Populating data into Vault"
+echo "\nPopulating data into Vault"
 vault kv put secret/mybb/mysql/credentials password="mybb"
 
 
-echo "\Configuring Vault policies"
+echo "\nConfiguring Vault policies"
 sleep 1
 
 # Set VAULT_SA_NAME to the service account you created earlier
@@ -90,5 +91,6 @@ echo "\nDeploying MyBB to Kubernetes"
 sleep 1
 helm install --name=mybb ./helm/dynamic
 
+sleep 15
 echo "\nTailing the logs..."
 stern --selector app=mybb

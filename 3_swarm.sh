@@ -1,4 +1,4 @@
-echo "\Stopping MyBB and MySQL Docker containers"
+echo "Stopping MyBB and MySQL Docker containers"
 sleep 1
 docker-compose -f docker/docker-compose.yml down
 

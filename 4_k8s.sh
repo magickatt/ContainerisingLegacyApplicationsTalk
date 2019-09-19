@@ -1,9 +1,7 @@
 # Delete the Docker Swarm Stack created in Step 3
-echo "\Stopping Docker Swarm deployment"
-sleep 1
+echo "Stopping Docker Swarm deployment"
+sleep 30
 docker stack rm mybb
-
-#kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=magickatt --docker-password=[password] --docker-email=youremail@email.com
 
 # Create the configmap
 echo "\nCreating MyBB configuration as ConfigMap"

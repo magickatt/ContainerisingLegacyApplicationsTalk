@@ -1,4 +1,6 @@
-# Containerising legacy applications talk
+# Containerizing legacy applications
+
+Contains code for all the demonstrations in the *Containerizing legacy applications with dynamic file-based configurations and secrets* talk that I delivered at DevOps Days Toronto 2019 and DevOps Days Boston 2019.
 
 ## Pre-requisites
 
@@ -11,76 +13,149 @@
  * Via [Docker for Mac](https://docs.docker.com/docker-for-mac/kubernetes/) (tested)
  * [Minikube](https://kubernetes.io/docs/setup/minikube)*
 
-\* _Currently there are default values for the Helm charts that point to the Docker for Mac host to access the local Docker registry from Kubernetes, so you will need to override this as appropriate_
-
-### Configuration
-
-#### Initialise Helm
-
-````
-helm init --history-max 200
-````
+_Currently there are default values for the Helm charts that point to the Docker for Mac host to access the local Docker registry from Kubernetes, so you will need to override this as appropriate_
 
 #### Create a local Docker registry
 
-````
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
-````
+    docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
-## Step 0, run locally
+#### Docker credentials
 
-````
-./0_run.sh
-````
+	kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=[username] --docker-password=[password] --docker-email=[email]
 
-## Step 1, run in Docker
+#### Initialise Helm
 
-````
-./1_docker.sh
-````
+    helm init --history-max 200
 
-## Step 2, run using Docker Compose
+## Demo 0, Run MyBB locally
 
-````
-./2_compose.sh
-````
+### Run
 
-## Step 3, run using Docker Swarm
+    ./0_local.sh
 
-````
-./3_swarm.sh
-````
+### Video
 
-## Step 4, run in Kubernetes
+![videos/Demo_0_Local.mp4](videos/thumbs/Demo_0_Local.gif)
 
-````
-./4_k8s.sh
-````
+[Demo 0 video on Vimeo](https://vimeo.com/358959423)
 
-## Step 5, deploy using Helm
+### Notes
 
-````
-./5_helm.sh
-````
+Coming soon...
 
-## Step 6, configure using Consul and Vault
+## Demo 1, Run MyBB in a single Docker container
 
-````
-./6_dynamic.sh
-````
+Outcome of this demo is to show a basic Docker image build and that MyBB runs on a local Docker host (with some caveats)
 
-## Step 7, dynamic configuration
+    ./1_docker.sh
 
-````
-./7_rotation.sh
-````
+### Video
 
-## Consul
+![videos/Demo_1_Docker.mp4](videos/thumbs/Demo_1_Docker.gif)
+
+[Demo 1 video on Vimeo](https://vimeo.com/357978539)
+
+## Demo 2, Run MyBB in multiple containers using Docker Compose
+
+### Run
+
+    ./2_compose.sh
+    
+### Video
+
+![videos/Demo_2_Compose.mp4](videos/thumbs/Demo_2_Compose.gif)
+
+[Demo 2 video on Vimeo](https://vimeo.com/358958970)
+
+### Notes
+
+    export PATH=$PATH:/Applications/MySQL\ Workbench.app/Contents/MacOS
+
+## Demo 3, Run MyBB in multiple containers using Docker Swarm
+
+### Run
+
+    ./3_swarm.sh
+    
+### Video
+
+![videos/Demo_3_Swarm.mp4](videos/thumbs/Demo_3_Swarm.gif)
+
+[Demo 3 video on Vimeo](https://vimeo.com/358959390)
+
+### Notes
+
+Coming soon...
+
+## Demo 4, Run MyBB in multiple containers using Kubernetes
+
+### Run
+
+    ./4_k8s.sh
+    
+### Video
+
+![videos/Demo_4_k8s.mp4](videos/thumbs/Demo_4_k8s.gif)
+
+[Demo 4 video on Vimeo](https://vimeo.com/358959402)
+
+### Notes
+
+Coming soon...
+
+## Demo 5, Install MyBB and dependent services using Helm
+
+### Run
+
+    ./5_helm.sh
+    
+### Video
+
+![videos/Demo_5_Helm.mp4](videos/thumbs/Demo_5_Helm.gif)
+
+[Demo 5 video on Vimeo](https://vimeo.com/358959408)
+
+### Notes
+
+Coming soon...
+
+## Demo 6, Run MyBB with Consul and Vault KV
+
+### Run
+
+    ./6_dynamic.sh
+    
+### Video
 
 https://learn.hashicorp.com/consul/getting-started-k8s/minikube
 
 https://github.com/helm/charts/tree/master/incubator/vault
- replicaCount: 1
+
+replicaCount: 1
+
+![videos/Demo_6_Dynamic.mp4](videos/thumbs/Demo_6_Dynamic.gif)
+
+[Demo 6 video on Vimeo](https://vimeo.com/358961230)
+
+### Notes
+
+Coming soon...
+
+## Demo 7, Run MyBB with Consul ESM and Vault database secrets engine
+
+### Run
+
+    ./7_rotation.sh
+    
+### Video
+
+![videos/Demo_7_Rotation.mp4](videos/thumbs/Demo_7_Rotation.gif)
+
+[Demo 7 video on Vimeo](https://vimeo.com/358959419)
+
+### Notes
+
+Coming soon...
 
 ## Quick command reference
 
@@ -102,6 +177,3 @@ List items in memcache
 ````
 echo "stats items" | ncat 127.0.0.1 11211
 ````
-
-
-export PATH=$PATH:/Applications/MySQL\ Workbench.app/Contents/MacOS

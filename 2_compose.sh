@@ -14,8 +14,8 @@ docker-compose -f docker/docker-compose.yml up -d
 
 #export PATH=$PATH:/Applications/MySQL\ Workbench.app/Contents/MacOS
 echo "\nImporting data into MySQL"
-# Wait for the MySQL container to come up (the lazy sleepy way)
-sleep 15
+# Wait for the MySQL container to come up
+dockerize --wait tcp://localhost:3306
 mysql -h 127.0.0.1 -u root -pexample < database/mybb.sql
 
 echo "\nTailing the logs..."

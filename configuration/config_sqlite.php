@@ -2,7 +2,7 @@
 
 # Database configuration
 $config['database']['type'] = 'sqlite';
-$config['database']['database'] = 'mybb.sdb';
+$config['database']['database'] = '/var/www/mybb/mybb.sdb';
 $config['database']['table_prefix'] = 'mybb_';
 
 $config['database']['hostname'] = 'database';

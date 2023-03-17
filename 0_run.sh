@@ -1,7 +1,7 @@
 VERSION=1.8.33
 VERSION_STRIPPED="${VERSION//./}"
 
-echo "Downloading and extracting MyBB ${VERSION}\n"
+echo "Downloading and extracting MyBB ${VERSION}\n" && sleep 1
 
 # Tidy up
 rm -Rf application/*
@@ -15,15 +15,11 @@ fi
 # Extract MyBB
 cp $FILE .
 unzip $FILE 'Upload/*' -d "/tmp/mybb${VERSION_STRIPPED}" -qq -o
-echo "(moving MyBB from /tmp to application)"
+echo "(moving MyBB from /tmp to application)" && sleep 1
 cp -R "/tmp/mybb${VERSION_STRIPPED}/Upload/" application && rm -Rf "/tmp/mybb${VERSION_STRIPPED}"
-chmod +w application
 # rm $FILE
 
-echo "\nUse 'mybb.sdb' as the path to the SQLite database."
-# cp database/mybb.sdb application && chmod +r application/mybb.sdb
-
 # https://www.php.net/manual/en/features.commandline.webserver.php
-echo "\nStarting PHP development web server"
+echo "\nStarting PHP development web server" && sleep 1
 php -S localhost:9000 -t application
 

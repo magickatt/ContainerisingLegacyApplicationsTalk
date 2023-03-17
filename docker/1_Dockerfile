@@ -1,4 +1,4 @@
-FROM php:7.2.16-apache-stretch
+FROM php:8.2.4-apache-bullseye
 
 # Add the site configuration for Apache
 COPY configuration/mybb.conf /etc/apache2/sites-available/mybb.conf

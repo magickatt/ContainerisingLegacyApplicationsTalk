@@ -39,6 +39,10 @@ Once you've installed Helm you'll need to [initialize it](https://helm.sh/docs/h
 
 Outcome of this demo is to prove that the [MyBB codebase downloaded from mybb.com](https://mybb.com/download/) will run using the [PHP built-in development web server](https://www.php.net/manual/en/features.commandline.webserver.php).
 
+### Notes
+
+Updating to MyBB 1.8.33 (updated in 2023) the relative path to the SQLite database no longer works, so an absolute path needs to be supplied now. 
+
 ### Run
 
     ./0_local.sh

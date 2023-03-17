@@ -17,10 +17,11 @@ cp $FILE .
 unzip $FILE 'Upload/*' -d "/tmp/mybb${VERSION_STRIPPED}" -qq -o
 echo "(moving MyBB from /tmp to application)"
 cp -R "/tmp/mybb${VERSION_STRIPPED}/Upload/" application && rm -Rf "/tmp/mybb${VERSION_STRIPPED}"
+chmod +w application
 # rm $FILE
 
 echo "\nUse 'mybb.sdb' as the path to the SQLite database."
-cp database/mybb.sdb application
+# cp database/mybb.sdb application && chmod +r application/mybb.sdb
 
 # https://www.php.net/manual/en/features.commandline.webserver.php
 echo "\nStarting PHP development web server"

@@ -17,18 +17,18 @@ spec:
     spec:
       initContainers:
       - name: init-mysql
-        image: mysql:5.7
+        image: mysql:8
         command:
         - bash
         - "-c"
         - |
-          set -ex
-          # Generate mysql server-id from pod ordinal index.
-          [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
-          ordinal=${BASH_REMATCH[1]}
-          echo [mysqld] > /mnt/conf.d/server-id.cnf
+          # set -ex
+          # # Generate mysql server-id from pod ordinal index.
+          # [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+          # ordinal=${BASH_REMATCH[1]}
+          # echo [mysqld] > /mnt/conf.d/server-id.cnf
           # Add an offset to avoid reserved server-id=0 value.
-          echo server-id=$((100 + $ordinal)) >> /mnt/conf.d/server-id.cnf
+          # echo server-id=$((100 + $ordinal)) >> /mnt/conf.d/server-id.cnf
           # Copy appropriate conf.d files from config-map to emptyDir.
           cp /mnt/config-map/master.cnf /mnt/conf.d/
         volumeMounts:
@@ -38,7 +38,7 @@ spec:
           mountPath: /mnt/config-map
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8
         env:
         - name: MYSQL_ALLOW_EMPTY_PASSWORD
           value: "1"

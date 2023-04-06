@@ -8,7 +8,7 @@ $config['database']['encoding'] = 'utf8';
 
 $config['database']['hostname'] = 'mysql-0.mysql';
 $config['database']['username'] = 'mybb';
-$config['database']['password'] = 'mybb';
+$config['database']['password'] = 'mybbmybb';
 
 # Admin configuration
 $config['admin_dir'] = 'admin';

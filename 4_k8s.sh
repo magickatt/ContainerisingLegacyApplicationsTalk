@@ -15,7 +15,7 @@ kubectl apply -f k8s/
 echo "\nInspecting MyBB and MySQL pods"
 kubectl get pods
 # kubectl create configmap mybb-configmap --from-file configuration/settings.php --from-file \
-# configuration/config.php -o yaml --dry-run | kubectl replace -f -
+# configuration/config_k8s.php -o yaml --dry-run=client | kubectl replace -f -
 
 echo "\nImporting data into MySQL"
 sleep 45

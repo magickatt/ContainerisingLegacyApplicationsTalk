@@ -3,7 +3,8 @@ mybb:
   replicas: 3
   port: 80
   image:
-    repository: docker.for.mac.localhost:5000/mybb
+    # repository: docker.for.mac.localhost:5000/mybb
+    repository: host.docker.internal:5000/mybb
     tag: 5_helm
 php:
   database:
@@ -16,7 +17,7 @@ mysql:
     encoding: utf8
   credentials:
     username: mybb
-    password: mybb
+    password: mybbmybb
 cache:
   store: memcached
   memcache:

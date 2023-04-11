@@ -6,7 +6,7 @@ metadata:
     type: local
 spec:
   # Storage class name is arbitrary in this case, just needs to match the claim below
-  storageClassName: manual
+  # storageClassName: manual
   capacity:
     storage: 4Mi
   accessModes:
@@ -23,7 +23,7 @@ metadata:
   name: mybb-settings-volumeclaim
 spec:
   # Above volume will be allocated to this claim if the storage class name matches
-  storageClassName: manual
+  # storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

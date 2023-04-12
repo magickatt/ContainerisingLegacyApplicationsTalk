@@ -1,6 +1,6 @@
 echo "Stopping MyBB deployment"
 sleep 1
-helm delete --purge mybb
+helm delete mybb
 pkill kubectl
 
 echo "\nBuilding MyBB Docker image"
@@ -12,7 +12,8 @@ docker push localhost:5000/mybb:6_dynamic
 #git clone https://github.com/hashicorp/consul-helm.git consul/helm
 echo "\nDeploying Consul to Kubernetes"
 sleep 1
-helm install -f consul/values.yaml --name configuration consul/helm
+# helm install -f consul/values.yaml configuration consul/helm
+helm install configuration hashicorp/consul --set global.name=consul
 
 # Wait for the Consul Server pod to come up (the lazy sleepy way)
 echo "\nWaiting for Consul to become available...\n"
@@ -41,7 +42,8 @@ sleep 1
 #rm -Rf vault/helm
 #git clone https://github.com/helm/charts /tmp/helm-charts
 #mv /tmp/helm-charts/incubator/vault vault/helm
-helm install --name=secrets --set replicaCount=1 vault/helm
+# helm install --set replicaCount=1 vault/helm
+helm install secrets hashicorp/vault --version 0.24.0
 
 echo "\nWaiting for Vault to become available...\n"
 sleep 10 # Wait for the Vault Server pod to come up (the lazy sleepy way)

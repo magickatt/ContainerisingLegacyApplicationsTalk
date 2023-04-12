@@ -8,9 +8,9 @@ sleep 1
 docker build . -f docker/7_Dockerfile -t localhost:5000/mybb:7_rotation
 docker push localhost:5000/mybb:7_rotation
 
-export VAULT_POD=$(kubectl get pods --namespace default -l "app=vault" -o jsonpath="{.items[0].metadata.name}")
+export VAULT_POD=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=vault" -o jsonpath="{.items[0].metadata.name}")
 kubectl port-forward $VAULT_POD 8200:8200 &
-export CONSUL_POD=configuration-consul-server-0
+export CONSUL_POD=consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
 
 export VAULT_ADDR=http://127.0.0.1:8200

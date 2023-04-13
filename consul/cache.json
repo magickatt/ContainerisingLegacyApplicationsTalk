@@ -10,10 +10,12 @@
     "Service": "cache",
     "Port": 11211
   },
-  "Checks": [{
-    "name": "ping check",
-    "args": ["ping","-c1","cache-memcache.default.svc.cluster.local"],
-    "interval": "30s",
-    "status": "passing"
-  }]
+	"Checks": [{
+		"Name": "ping-check",
+		"status": "passing",
+		"Definition": {
+			"http": "cache-memcache.default.svc.cluster.local",
+			"interval": "30s"
+		}
+	}]
 }

@@ -46,7 +46,7 @@ curl --request PUT --data @consul/cache.json localhost:8500/v1/catalog/register
 echo "\nDeploying MyBB to Kubernetes"
 sleep 1
 #helm install --dry-run --debug --set mybb.image.tag=7_rotation ./helm/dynamic
-helm install --name=mybb --set mybb.image.tag=7_rotation ./helm/dynamic
+helm install mybb --set mybb.image.tag=7_rotation ./helm/dynamic
 
 sleep 15
 echo "Tailing logs of the MyBB deployment..."

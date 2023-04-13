@@ -3,10 +3,10 @@ mybb:
   replicas: 3
   port: 80
   image:
-    repository: docker.for.mac.localhost:5000/mybb
+    repository: host.docker.internal:5000/mybb
     tag: 6_dynamic
 consul:
-  host: configuration-consul-server-0.configuration-consul-server.default.svc
+  host: consul-server-0.consul-server.default.svc
   port: 8500
 vault:
   host: http://secrets-vault

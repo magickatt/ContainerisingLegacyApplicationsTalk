@@ -18,6 +18,7 @@ spec:
       containers:
       - name: mybb
         image: "{{- .Values.mybb.image.repository }}:{{ .Values.mybb.image.tag -}}"
+        imagePullPolicy: Always
         # image: docker.io/magickatt/mybb:7_rotation
         env:
         - name: VAULT_ADDR

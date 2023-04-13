@@ -19,3 +19,7 @@ path "database/creds/mybb" {
 path "/sys/leases/renew" {
   capabilities = [ "update" ]
 }
+
+path "secret/data/test" {
+  capabilities = ["read"]
+}

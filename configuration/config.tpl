@@ -8,7 +8,7 @@ $config['database']['encoding'] = '{{ key "mybb/mysql/encoding" }}';
 
 $config['database']['hostname'] = '{{ key "mybb/mysql/hostname" }}';
 $config['database']['username'] = '{{ key "mybb/mysql/credentials/username" }}';
-$config['database']['password'] = '{{ with secret "secret/data/mybb/mysql/credentials" }}{{ .Data.data.password }}{{ end }}';
+$config['database']['password'] = '{{ with secret "secret/mybb/mysql/credentials" }}{{ .Data.password }}{{ end }}';
 
 # Admin configuration
 $config['admin_dir'] = 'admin';

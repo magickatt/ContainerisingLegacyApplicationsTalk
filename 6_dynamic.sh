@@ -18,7 +18,7 @@ helm install configuration hashicorp/consul --set global.name=consul
 # Wait for the Consul Server pod to come up (the lazy sleepy way)
 echo "\nWaiting for Consul to become available...\n"
 sleep 15
-export CONSUL_POD=configuration-consul-server-0
+export CONSUL_POD=consul-server-0
 kubectl port-forward $CONSUL_POD 8500:8500 &
 
 echo "\Populating data into Consul"
@@ -47,7 +47,7 @@ helm install secrets hashicorp/vault --version 0.24.0
 
 echo "\nWaiting for Vault to become available...\n"
 sleep 10 # Wait for the Vault Server pod to come up (the lazy sleepy way)
-export VAULT_POD=$(kubectl get pods --namespace default -l "app=vault" -o jsonpath="{.items[0].metadata.name}")
+export VAULT_POD=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=vault" -o jsonpath="{.items[0].metadata.name}")
 kubectl port-forward $VAULT_POD 8200:8200 &
 
 export VAULT_ADDR=http://127.0.0.1:8200
@@ -57,14 +57,17 @@ kubectl create serviceaccount vault-auth
 kubectl apply --filename vault/vault-auth-service-account.yml
 
 echo "\nPopulating data into Vault"
-vault kv put secret/mybb/mysql/credentials password="mybb"
+# https://discuss.hashicorp.com/t/unable-to-create-kv-secret-with-cli-but-can-in-ui-using-root-token/24130/6
+vault kv put secret/mybb/mysql/credentials password="mybbmybb"
 
 
 echo "\nConfiguring Vault policies"
 sleep 1
 
 # Set VAULT_SA_NAME to the service account you created earlier
-export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
+# https://stackoverflow.com/questions/72256006/service-account-secret-is-not-listed-how-to-fix-it
+#export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
+export VAULT_SA_NAME="vault-auth"
 
 # Set SA_JWT_TOKEN value to the service account JWT used to access the TokenReview API
 export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data.token}" | base64 --decode; echo)
@@ -91,7 +94,7 @@ vault write auth/kubernetes/role/mybb \
 
 echo "\nDeploying MyBB to Kubernetes"
 sleep 1
-helm install --name=mybb ./helm/dynamic
+helm install /helm/dynamic
 
 sleep 15
 echo "\nTailing the logs..."
